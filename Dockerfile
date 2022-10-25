@@ -1,9 +1,10 @@
-FROM node:lts-alpine
-WORKDIR /usr/src/app
+FROM node:latest as build-stage
+WORKDIR /app
 COPY package*.json ./
-RUN npm install -g http-server
-COPY WAREHOUSE-UI ./
-RUN ls -l
+RUN npm install
+COPY ./ .
 RUN npm run build
-EXPOSE 8080
-CMD ["http-server","dist"]
+FROM ngnix as production-stage
+RUN mkdir /app
+COPY --from=build-stage /app/dist /app
+COPY ngnix.conf /etc/ngnix/ngnix.conf
