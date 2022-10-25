@@ -1,6 +1,6 @@
 FROM node:lts-alpine
 WORKDIR /usr/src/app
-COPY WAREHOUSE-UI/package*.json ./
+COPY package*.json ./
 RUN npm install -g http-server
 COPY WAREHOUSE-UI ./
 RUN ls -l
